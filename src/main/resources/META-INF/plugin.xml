@@ -1,0 +1,68 @@
+<idea-plugin>
+    <id>com.informativecopy.plugin</id>
+    <name>Informative Copy</name>
+    <vendor>Informative Copy</vendor>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends optional="true" config-file="informative-copy-git.xml">Git4Idea</depends>
+
+    <extensionPoints>
+        <extensionPoint
+            name="contextProvider"
+            interface="com.informativecopy.provider.ContextCopyProvider"
+            dynamic="true"/>
+    </extensionPoints>
+
+    <extensions defaultExtensionNs="com.informativecopy">
+        <contextProvider implementation="com.informativecopy.provider.DiffEditorCopyProvider"/>
+        <contextProvider implementation="com.informativecopy.provider.CodeEditorCopyProvider"/>
+        <contextProvider implementation="com.informativecopy.provider.ConsoleCopyProvider"/>
+        <contextProvider implementation="com.informativecopy.provider.VcsLocalChangesCopyProvider"/>
+        <contextProvider implementation="com.informativecopy.provider.ToolWindowNodeCopyProvider"/>
+        <contextProvider implementation="com.informativecopy.provider.ProjectTreeCopyProvider"/>
+    </extensions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationConfigurable
+            parentId="tools"
+            instance="com.informativecopy.settings.InformativeCopyConfigurable"
+            id="com.informativecopy.settings"
+            displayName="Informative Copy"/>
+
+        <notificationGroup
+            id="Informative Copy"
+            displayType="BALLOON"
+            isLogByDefault="false"/>
+    </extensions>
+
+    <actions>
+        <action
+            id="InformativeCopy.Copy"
+            class="com.informativecopy.action.InformativeCopyAction"
+            text="Informative Copy"
+            description="Context-aware copy with file path, line numbers, commit info, or diagnostics">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift C"/>
+            <add-to-group group-id="EditMenu" anchor="after" relative-to-action="CopyReference"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="CopyReference"/>
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="after" relative-to-action="CopyReference"/>
+            <add-to-group group-id="ChangesViewPopupMenu" anchor="last"/>
+            <add-to-group group-id="Vcs.Log.ContextMenu" anchor="last"/>
+            <add-to-group group-id="Diff.EditorPopupMenu" anchor="last"/>
+            <add-to-group group-id="ConsoleEditorPopupMenu" anchor="last"/>
+        </action>
+
+        <action
+            id="InformativeCopy.CopyDetailed"
+            class="com.informativecopy.action.InformativeCopyDetailedAction"
+            text="Informative Copy (With Diff / Context)"
+            description="Context-aware detailed copy including unified diff or surrounding lines">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt shift C"/>
+            <add-to-group group-id="EditMenu" anchor="after" relative-to-action="InformativeCopy.Copy"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="after" relative-to-action="InformativeCopy.Copy"/>
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="after" relative-to-action="InformativeCopy.Copy"/>
+            <add-to-group group-id="ChangesViewPopupMenu" anchor="after" relative-to-action="InformativeCopy.Copy"/>
+            <add-to-group group-id="Vcs.Log.ContextMenu" anchor="after" relative-to-action="InformativeCopy.Copy"/>
+            <add-to-group group-id="Diff.EditorPopupMenu" anchor="after" relative-to-action="InformativeCopy.Copy"/>
+        </action>
+    </actions>
+</idea-plugin>

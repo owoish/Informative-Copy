@@ -1,0 +1,5 @@
+<idea-plugin>
+    <extensions defaultExtensionNs="com.informativecopy">
+        <contextProvider implementation="com.informativecopy.provider.git.GitLogCommitCopyProvider"/>
+    </extensions>
+</idea-plugin>
